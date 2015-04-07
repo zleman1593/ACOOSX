@@ -54,7 +54,6 @@ class InputFileReader {
             }
 
         }
-        
         return  cities
     }
     
@@ -64,7 +63,7 @@ class InputFileReader {
 extension String {
     func getDoublesFromString() -> [Double]{
         let splitLine = self.componentsSeparatedByString(" ").filter {$0 != "" }
-        let result = splitLine.map {($0 as NSString).doubleValue}
+        let result = splitLine.map {NSDecimalNumber(string: $0 as NSString).doubleValue}
         return result
     }
 }

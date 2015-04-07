@@ -11,7 +11,7 @@ import Cocoa
 class AntColonyViewController: NSViewController, AntViewDelegate {
     
     private let filereader = InputFileReader()
-    private let fileLocation = "a280"
+
     private var solver: ACO!
     @IBOutlet var antView: AntView! {
         didSet {
@@ -19,28 +19,35 @@ class AntColonyViewController: NSViewController, AntViewDelegate {
         }
     }
     
-    
-    
-    private struct Constants {
-        static let tau_o = 1
-        static let algorithm = "ACS"
-        static let numberOfAnts = 10
+
+    private struct Parameters {
+        static let tau_o = 1.0
+        static let rho = 0.1
+        static let alpha = 1.0
+        static let beta = 2.0
+        static let fileLocation = "eil76"//"d2103"
+        static let algorithm = "EAS"
+        //static let numberOfAnts = 10
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
-        let fileContents = filereader.readFrom(fileLocation)
-        solver = ACO(fileContents: fileContents, algorithm: Constants.algorithm,numberOfAnts: Constants.numberOfAnts)
-        //solver.runWithSettings()
+        //Load the cities from the file
+        let fileContents = filereader.readFrom(Parameters.fileLocation)
+        
+        //Create an instance of the ACO
+        solver = ACO(fileContents: fileContents, algorithm: Parameters.algorithm,numberOfAnts: fileContents.count)
+        
+        //Run the ACO with the settings
+        solver.runWithSettings(Parameters.alpha, beta: Parameters.beta, rho: Parameters.rho, elitismFactor: Double(fileContents.count))
+        
     }
-
+    
     
     func getACOInstance() -> ACO{
-        
-    return solver
+        return solver
     }
-
+    
 }
 
