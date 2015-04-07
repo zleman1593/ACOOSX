@@ -24,7 +24,6 @@ class ACO  {
         self.edges =  makeEdges()
         self.algorithm = algorithm
         self.ants = getAnts(numberOfAnts)
-        initIteration()
     }
     
     func runWithSettings(alpha:Double,beta:Double,rho:Double,elitismFactor:Double){
@@ -39,7 +38,7 @@ class ACO  {
         start()
     }
     
-    //This needs to be rewrriten to use greedy
+    //This needs to be rewrriten to use greedy-----------------------------
     private func initPheromone(){
         for (_,edge) in edges {
             edge.currentPheromoneConcentration = 1
@@ -50,16 +49,18 @@ class ACO  {
         var bestTour: Tour?
         
         //Main loop
-        for index in 0...20 {
+        for index in 0...40 {
+            initIteration()
             //Construct Solution
-            //Create a dictionary of CityWithProb objects so that ants can reuse the calculations from previosu ants.  (Dynamic Programming)
-            var edgeDictForIteration: [String:CityWithProb] = [:]
+            //Create a dictionary of EdgeWithProbability objects so that ants can reuse the calculations from previosu ants.  (Dynamic Programming)
+            var edgeDictForIteration: [String:EdgeWithProbability] = [:]
+      
             for ant in ants {
-                //let q = 1//delere this
+
                 while ant.remainingCities.count != 0 {
                     
                     //Find all the edges the ant can move along given its initial starting city and possible available cities
-                    var remainingCities = ant.remainingCities.map { (var nextCity: Int) -> CityWithProb in
+                    var remainingCities = ant.remainingCities.map {[unowned self] (var nextCity: Int) -> EdgeWithProbability in
                         var cityA = ant.currentCity
                         var cityB = nextCity
                         if cityA > cityB {
@@ -72,41 +73,33 @@ class ACO  {
                         if let edgeAlreadyUsed = edgeDictForIteration["\(cityA):\(cityB)"]{
                             return edgeAlreadyUsed
                         } else {
-                            let city =  CityWithProb(edge: self.edges["\(cityA):\(cityB)"]!, alpha:self.alpha,beta:self.beta)
+                            let city =  EdgeWithProbability(edge: self.edges["\(cityA):\(cityB)"]!, alpha:self.alpha,beta:self.beta)
+                            
                             //Add the edge to the dictionary (Dynamic Programming)
                             edgeDictForIteration["\(city.edge.name)"] = city
                             return city
                         }
                     }
                     
-                    
-                    
-                    // Calculate the denominator
-                    var denominator = sum(remainingCities)
-                    
-                    let (selectedEdge, indexForRemoval) = pickElementWithProbability(remainingCities,denominator: denominator)!
+                    let (selectedEdge, indexForRemoval) = pickElementWithProbability(remainingCities,denominator: denominator(remainingCities))!
                     
                     var cityA = ant.currentCity
-                    var cityB = selectedEdge.city(cityA)
+                    var cityB = selectedEdge.cityToMoveTo(cityA)
+                    
                     if cityA > cityB {
                         let temp = cityB
                         cityB = cityA
                         cityA = temp
                         
                     }
-                   
-                   /* print("BEFOR:")
- //For testing
-                    if  ant.currentTour.edgesInTour["\(cityA):\(cityB)"]  != nil{
-                        let temp = "\(cityA):\(cityB)"
-                        println("BAD: \(temp)")
-                    }*/
                     
                     ant.currentTour.edgesInTour["\(cityA):\(cityB)"] = selectedEdge.edge
                     ant.remainingCities.removeAtIndex(indexForRemoval)
                     //Update the ants current city
-                    ant.currentCity = selectedEdge.city(cityA)
+                    ant.currentCity = selectedEdge.cityToMoveTo(ant.currentCity)
                 }
+                
+                
                 //Update best Tour
                 if let best = bestTour{
                     if best.length > ant.currentTour.length {
@@ -116,12 +109,11 @@ class ACO  {
                     bestTour =  ant.currentTour
                 }
                 
-                initIteration()
             }
             
         }
         //update phermones for EAS
-        for (name,edge) in edges {
+        for (name, edge) in edges {
             var concentration =  edge.currentPheromoneConcentration * (1-rho)
             for ant in ants {
                 if ant.currentTour.edgesInTour[name] != nil{
@@ -137,8 +129,8 @@ class ACO  {
         println(bestTour!.description)
     }
     
-    
-    private func sum(edges: [CityWithProb]) -> Double{
+    /*Sums the nummerators to create the denominator*/
+    private func denominator(edges: [EdgeWithProbability]) -> Double{
         var sum = 0.0
         for edge in edges{
             if edge.probNumerator.isInfinite {
@@ -153,43 +145,47 @@ class ACO  {
     }
     
     
-    
-    private class CityWithProb {
-        
+    /*This struture is created for use during all ants for a single iteration*/
+    private class EdgeWithProbability {
+        //Alpha and beta are stored so the lazy property can be run
         var alpha: Double!
         var beta: Double!
+        
+        //The edge
+        var edge: Edge!
         
         init(edge:Edge, alpha: Double,beta:Double){
             self.edge = edge
             self.alpha = alpha
             self.beta = beta
         }
-        var edge: Edge!
-        lazy var probNumerator: Double! = {
-            if let city  = self.edge {
-                return pow(self.edge.currentPheromoneConcentration,self.alpha)*pow(1/self.edge.euclideanDistance!,self.beta)
-            }
-            return nil
-            }()
-        func city(currentCity:Int) -> Int! {
-            if currentCity != edge.cityB{
-                
-                return edge.cityB
-            } else {
-                  return edge.cityA
-            }
-        }
         
         func probability(denominator: Double) -> Double  {
             return self.probNumerator / denominator
         }
         
+        lazy var probNumerator: Double! = {
+            if let city  = self.edge {
+                return pow(self.edge.currentPheromoneConcentration,self.alpha)*pow(1/self.edge.euclideanDistance,self.beta)
+            }
+            return nil
+            }()
+        
+        /*Returns the city that is on the other side of the edge from the city the ant is currently at*/
+        func cityToMoveTo(currentCity:Int) -> Int! {
+            
+            if currentCity != edge.cityB{
+                return edge.cityB
+            } else {
+                return edge.cityA
+            }
+        }
+        
+        
+        
     }
     
-    
-    
-    
-    
+ 
     
     private func makeEdges() -> [String:Edge]{
         var edgeDict:[String:Edge] = [:]
@@ -214,19 +210,17 @@ class ACO  {
         return ants
     }
     
+    
     private func initIteration(){
         //randomizeAntStartLocation
         for index in 0..<ants.count  {
-            let randomStart = arc4random_uniform(UInt32(cities.count))
-            ants[index].currentCity = Int(randomStart)
+            ants[index].currentCity =  Int(arc4random_uniform(UInt32(cities.count)))
             ants[index].remainingCities = initArraywithRange(0, max: cities.count, except: ants[index].currentCity)
             ants[index].currentTour = Tour()
-            
         }
-        
     }
     
-    
+    /*Creates an array of integers within a given range exclsuign a single value*/
     private func initArraywithRange(min: Int, max: Int, except:Int) -> [Int]{
         
         var array:[Int] = []
@@ -239,42 +233,34 @@ class ACO  {
         return array
     }
     
-    private func pickElementWithProbability(arrayToBeSelectedFrom:[CityWithProb],denominator: Double)-> (CityWithProb,Int)?{
-        
-        
+    
+    private func pickElementWithProbability(arrayToBeSelectedFrom:[EdgeWithProbability],denominator: Double)-> (EdgeWithProbability,Int)?{
         
         //generate one random number  betwen 0 and 1
-        
-        
         let arc4randoMax:Double = 0x100000000
         let upper = 1.0
         let lower = 0.0
         let randomNumber = (Double(arc4random()) / arc4randoMax) * (upper - lower) + lower
-        // println("Random number: \(randomNumber)")
+        
         // Initialize two range indices that bracket probability ranges
         var cumulativeProbabilityLag = 0.0
         var cumulativeProbabilityLead = arrayToBeSelectedFrom.first!.probability(denominator) //proability of first edge in array
         
         for (var i = 0;  i < arrayToBeSelectedFrom.count;  i++) {
             
-            // If random value/selection is within the range indicated by
-            // the two indices then return
+            // If random value is within the range indicated by the two indices then return
             if (randomNumber >= cumulativeProbabilityLag) && (randomNumber < cumulativeProbabilityLead) {
                 return (arrayToBeSelectedFrom[i],i)
             }
             // lead position becomes the lag position
             cumulativeProbabilityLag = cumulativeProbabilityLead
-            // New lead is old lead position plus additional probability of the
-            // next individual
             
+            // New lead is old lead position plus additional probability of the next individual
             if i < arrayToBeSelectedFrom.count - 1 {
                 cumulativeProbabilityLead += arrayToBeSelectedFrom[i+1].probability(denominator)
             } else {
                 return (arrayToBeSelectedFrom[i],i)
             }
-            //TODO: this will cause crash sometimes
-            
-            
             
         }
         return nil
