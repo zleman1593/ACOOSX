@@ -21,7 +21,7 @@ class Ant{
 
 class Tour: Printable{
     var edgesInTour: [String:Edge] = [:]
-    lazy var length: Double = {
+    lazy var length: Double =  { 
         
         return  self.sumEdgeDistance() }()
     

@@ -23,14 +23,13 @@ class AntColonyViewController: NSViewController, AntViewDelegate, ACODelegate {
     
     
     private struct Parameters {
-        static let tau_o = 1.0
         static let rho = 0.1
         static let alpha = 1.0
         static let beta = 2.0
         static let fileLocation = "eil76"//"d2103"
-        static let algorithm = "ACS"//"EAS"
+        static let algorithm = "EAS"//"EAS"
         static let epsilon = 0.5
-        static let iterations = 50
+        static let iterations = 200
     }
     
     override func viewDidLoad() {

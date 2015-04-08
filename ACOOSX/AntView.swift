@@ -18,7 +18,14 @@ class AntView: NSView {
     var cities:[Point2D]!
     let yScale = 13.0
     let xScale = 13.0
-    var bestTour:Tour?
+    var bestTour:Tour? {
+        willSet {
+            if bestTour?.length != newValue?.length {
+            lastTour = bestTour
+            }
+        }
+    }
+    var lastTour:Tour?
     
     override func drawRect(rect: CGRect) {
         //antColonyInstance = delegate?.getACOInstance()
@@ -33,6 +40,20 @@ class AntView: NSView {
                 color.set()
                 cityPoint.stroke()
                 
+            }
+        }
+        
+    
+        
+        
+        if let currentTour = lastTour{
+            for (_,edge) in currentTour.edgesInTour {
+                let edgeToDraw  = NSBezierPath()
+                edgeToDraw.moveToPoint(NSPoint(x: edge.cityALocation.x * xScale, y: (edge.cityALocation.y  * yScale)))
+                edgeToDraw.lineToPoint(NSPoint(x: edge.cityBLocation.x * xScale, y: (edge.cityBLocation.y * yScale)))
+                edgeToDraw.lineWidth = lineWidth
+                NSColor.grayColor().set()
+                edgeToDraw.stroke()
             }
         }
         

@@ -55,7 +55,8 @@ class ACO  {
             initIteration()
             //Construct Solution
             //Create a dictionary of EdgeWithProbability objects so that ants can reuse the calculations from previosu ants.  (Dynamic Programming)
-            var edgeDictForIteration: [String:EdgeWithProbability] = [:]
+            //var edgeDictForIteration: [String:EdgeWithProbability] = [:]
+            //If this is used it has to be modified so the lazy numerator pro is recalculated for when the edge has been traversed by an ant for ACS
             
             for ant in ants {
                 
@@ -67,15 +68,15 @@ class ACO  {
                         
                         let (cityA,cityB) = self.swapIfNeeded(ant.currentCity,cityB: nextCity)
                         
-                        if let edgeAlreadyUsed = edgeDictForIteration["\(cityA):\(cityB)"]{
-                            return edgeAlreadyUsed
-                        } else {
+//                        if let edgeAlreadyUsed = edgeDictForIteration["\(cityA):\(cityB)"]{
+//                            return edgeAlreadyUsed
+//                        } else {
                             let city =  EdgeWithProbability(edge: self.edges["\(cityA):\(cityB)"]!, alpha:self.alpha,beta:self.beta)
                             
                             //Add the edge to the dictionary (Dynamic Programming)
-                            edgeDictForIteration["\(city.edge.name)"] = city
+                            //edgeDictForIteration["\(city.edge.name)"] = city
                             return city
-                        }
+//                        }
                     }
                     
                     let (selectedEdge, indexForRemoval) = pickElementWithProbability(remainingCities,denominator: denominator(remainingCities))!
@@ -96,7 +97,7 @@ class ACO  {
                     ant.currentCity = selectedEdge.cityToMoveTo(ant.currentCity)
                     
                     if algorithm == "ACS"{
-                        selectedEdge.edge.currentPheromoneConcentration = ((1-epsilon) * selectedEdge.edge.currentPheromoneConcentration) + (epsilon * selectedEdge.edge.initialPheromoneConcentration)
+                        selectedEdge.edge.currentPheromoneConcentration = ((1 - epsilon) * selectedEdge.edge.currentPheromoneConcentration) + (epsilon * selectedEdge.edge.initialPheromoneConcentration)
                     }
                     
                 }
@@ -143,7 +144,6 @@ class ACO  {
             delegate.updateScreenState(bestTour!)
         }
         
-        //println(bestTour!.description)
     }
     
     /*Sums the nummerators to create the denominator*/
@@ -154,9 +154,6 @@ class ACO  {
                 print("Infinity error")
             }
             sum += edge.probNumerator
-        }
-        if sum.isInfinite {
-            print("Infinity error")
         }
         return sum
     }
