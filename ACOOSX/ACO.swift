@@ -18,6 +18,9 @@ class ACO  {
     var beta: Double!
     var rho: Double!
     var elitismFactor: Double!
+    var epsilon:Double!
+    var iterations: Int!
+    var delegate:ACODelegate!
     
     init(fileContents:[Point2D], algorithm:String,numberOfAnts:Int){
         self.cities = fileContents
@@ -26,49 +29,43 @@ class ACO  {
         self.ants = getAnts(numberOfAnts)
     }
     
-    func runWithSettings(alpha:Double,beta:Double,rho:Double,elitismFactor:Double){
+    func runWithSettings(alpha:Double,beta:Double,rho:Double,elitismFactor:Double,epsilon:Double,iterations:Int){
         self.alpha = alpha
         self.beta = beta
         self.rho = rho
         self.elitismFactor = elitismFactor
-        // init tau naught
-        //Get epsilon
+        self.epsilon = epsilon
+        self.iterations = iterations
         
-        initPheromone()
+        if algorithm == "ACS" {
+            initPheromoneForACS()
+        }else{
+            initPheromoneForEAS()
+        }
+        
         start()
     }
     
-    //This needs to be rewrriten to use greedy-----------------------------
-    private func initPheromone(){
-        for (_,edge) in edges {
-            edge.currentPheromoneConcentration = 1
-        }
-    }
     
     private func start(){
         var bestTour: Tour?
         
         //Main loop
-        for index in 0...40 {
+        for index in 0...iterations {
             initIteration()
             //Construct Solution
             //Create a dictionary of EdgeWithProbability objects so that ants can reuse the calculations from previosu ants.  (Dynamic Programming)
             var edgeDictForIteration: [String:EdgeWithProbability] = [:]
-      
+            
             for ant in ants {
-
+                
                 while ant.remainingCities.count != 0 {
                     
                     //Find all the edges the ant can move along given its initial starting city and possible available cities
                     var remainingCities = ant.remainingCities.map {[unowned self] (var nextCity: Int) -> EdgeWithProbability in
-                        var cityA = ant.currentCity
-                        var cityB = nextCity
-                        if cityA > cityB {
-                            let temp = cityB
-                            cityB = cityA
-                            cityA = temp
-                            
-                        }
+                        
+                        
+                        let (cityA,cityB) = self.swapIfNeeded(ant.currentCity,cityB: nextCity)
                         
                         if let edgeAlreadyUsed = edgeDictForIteration["\(cityA):\(cityB)"]{
                             return edgeAlreadyUsed
@@ -86,17 +83,22 @@ class ACO  {
                     var cityA = ant.currentCity
                     var cityB = selectedEdge.cityToMoveTo(cityA)
                     
+                    //Swap city names if needed to get correct dict entry where name follows format of "less cty value: greater city value"
                     if cityA > cityB {
                         let temp = cityB
                         cityB = cityA
                         cityA = temp
-                        
                     }
                     
+                    //Update ANT
                     ant.currentTour.edgesInTour["\(cityA):\(cityB)"] = selectedEdge.edge
                     ant.remainingCities.removeAtIndex(indexForRemoval)
-                    //Update the ants current city
                     ant.currentCity = selectedEdge.cityToMoveTo(ant.currentCity)
+                    
+                    if algorithm == "ACS"{
+                        selectedEdge.edge.currentPheromoneConcentration = ((1-epsilon) * selectedEdge.edge.currentPheromoneConcentration) + (epsilon * selectedEdge.edge.initialPheromoneConcentration)
+                    }
+                    
                 }
                 
                 
@@ -105,28 +107,43 @@ class ACO  {
                     if best.length > ant.currentTour.length {
                         bestTour =  ant.currentTour
                     }
+                    
                 } else{
                     bestTour =  ant.currentTour
+                    
                 }
                 
             }
-            
-        }
-        //update phermones for EAS
-        for (name, edge) in edges {
-            var concentration =  edge.currentPheromoneConcentration * (1-rho)
-            for ant in ants {
-                if ant.currentTour.edgesInTour[name] != nil{
-                    concentration += 1 /  ant.currentTour.length
+            //update phermones
+            for (name, edge) in edges {
+                //For Both
+                var concentration =  edge.currentPheromoneConcentration * (1-rho)
+                //For EAS
+                for ant in ants {
+                    if ant.currentTour.edgesInTour[name] != nil{
+                        concentration += 1 /  ant.currentTour.length
+                    }
                 }
+                
+                if bestTour!.edgesInTour[name] != nil{
+                    //For EAS
+                    if algorithm == "EAS"{
+                        concentration += ( 1 /  bestTour!.length ) * elitismFactor
+                        //For ACS
+                    }else{
+                        concentration += ( 1 /  bestTour!.length ) * rho
+                    }
+                }
+                
+                edge.currentPheromoneConcentration = concentration
             }
-            if bestTour!.edgesInTour[name] != nil{
-                concentration += 1 /  bestTour!.length * elitismFactor
-            }
-            edge.currentPheromoneConcentration = concentration
+            
+           println(bestTour!.description)
+            //Update View
+            delegate.updateScreenState(bestTour!)
         }
         
-        println(bestTour!.description)
+        //println(bestTour!.description)
     }
     
     /*Sums the nummerators to create the denominator*/
@@ -185,7 +202,7 @@ class ACO  {
         
     }
     
- 
+    
     
     private func makeEdges() -> [String:Edge]{
         var edgeDict:[String:Edge] = [:]
@@ -267,8 +284,95 @@ class ACO  {
     }
     
     
+    //For ACS this inits the phermone level
+    private func initPheromoneForEAS(){
+        for (_,edge) in edges {
+            edge.currentPheromoneConcentration = 1
+        }
+    }
+    
+    private func initPheromoneForACS(){
+        //Init a Greedy Ant
+        let greedyAnt = Ant()
+        greedyAnt.currentCity =  Int(arc4random_uniform(UInt32(cities.count)))
+        greedyAnt.remainingCities = initArraywithRange(0, max: cities.count, except: greedyAnt.currentCity)
+        greedyAnt.currentTour = Tour()
+        
+        while greedyAnt.remainingCities.count != 0 {
+            
+            //Find all the edges the ant can move along given its initial starting city and possible available cities
+            let remainingCities = greedyAnt.remainingCities.map {[unowned self] (var nextCity: Int) -> EdgeWithProbability in
+                
+                let (cityA,cityB) = self.swapIfNeeded(greedyAnt.currentCity,cityB: nextCity)
+                
+                return  EdgeWithProbability(edge: self.edges["\(cityA):\(cityB)"]!, alpha:self.alpha,beta:self.beta)
+                
+            }
+            
+            let (selectedEdge, indexForRemoval) = pickEdgeWithShortestDistance(remainingCities)
+            var cityA = greedyAnt.currentCity
+            var cityB = selectedEdge.cityToMoveTo(cityA)
+            
+            //Swap city names if needed to get correct dict entry where name follows format of "less cty value: greater city value"
+            if cityA > cityB {
+                let temp = cityB
+                cityB = cityA
+                cityA = temp
+            }
+            
+            
+            
+            //Update Greedy ANT
+            greedyAnt.currentTour.edgesInTour["\(cityA):\(cityB)"] = selectedEdge.edge
+            greedyAnt.remainingCities.removeAtIndex(indexForRemoval)
+            greedyAnt.currentCity = selectedEdge.cityToMoveTo(greedyAnt.currentCity)
+        }
+        
+        
+        let temp = Double(ants.count) * greedyAnt.currentTour.length
+        let tau_o = 1 /  Double(temp)
+        for (_,edge) in edges {
+            edge.initialPheromoneConcentration = tau_o
+        }
+    }
+    
+    private func pickEdgeWithShortestDistance(arrayToBeSelectedFrom:[EdgeWithProbability])->(EdgeWithProbability,Int){
+        var currentMin = Double(UInt8.max)
+        var selectedEdge: EdgeWithProbability!
+        var index = 0
+        
+        for i in 0..<arrayToBeSelectedFrom.count {
+            
+            // If random value is within the range indicated by the two indices then return
+            if arrayToBeSelectedFrom[i].edge.euclideanDistance < currentMin {
+                currentMin = arrayToBeSelectedFrom[i].edge.euclideanDistance
+                selectedEdge = arrayToBeSelectedFrom[i]
+                index = i
+            }
+                
+        }
+ 
+        return (selectedEdge,index)
+    }
+    
+    //Swap city names if needed to get correct dict entry where name follows format of "less cty value: greater city value"
+    private func  swapIfNeeded(var cityA:Int,var cityB:Int)->(Int,Int){
+        if cityA > cityB {
+            let temp = cityB
+            cityB = cityA
+            cityA = temp
+            return (cityA,cityB)
+        }
+        return (cityA,cityB)
+    }
+    
 }
 
+
+protocol ACODelegate {
+    
+    func updateScreenState(tour:Tour?)
+}
 
 
 

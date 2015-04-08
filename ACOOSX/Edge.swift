@@ -21,7 +21,11 @@ class Edge {
         var dist = pow(x,2)+pow(y,2)
         return sqrt(dist)
     }()
-    var initialPheromoneConcentration: Double!
+    var initialPheromoneConcentration: Double! {
+        didSet {
+            currentPheromoneConcentration = initialPheromoneConcentration
+        }
+    }
     var currentPheromoneConcentration: Double!
     var name: String {
         return "\(cityA):\(cityB)"

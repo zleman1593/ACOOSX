@@ -13,32 +13,43 @@ class AntView: NSView {
     var delegate: AntViewDelegate!
     private var antColonyInstance: ACO?
     @IBInspectable
-    var lineWidth: CGFloat = 3 { didSet { } }
-    var color: NSColor = NSColor.blueColor() { didSet { } }
+    var lineWidth: CGFloat = 3 { didSet {display() } }
+    var color: NSColor = NSColor.blueColor() { didSet {display() } }
+    var cities:[Point2D]!
+    let yScale = 13.0
+    let xScale = 13.0
+    var bestTour:Tour?
     
     override func drawRect(rect: CGRect) {
-         antColonyInstance = delegate?.getACOInstance()
+        //antColonyInstance = delegate?.getACOInstance()
         
-        let antPath =  NSBezierPath(rect: CGRect(x: 100, y: 100, width: 12, height: 12))
         
-        /*UIBezierPath(
-            arcCenter: faceCenter,
-            radius: faceRadius,
-            startAngle: 0,
-            endAngle: CGFloat(2*M_PI),
-            clockwise: true
-        )*/
+        if let listOfCities = cities {
+            for city in cities {
+                let x = (Double(city.x) * yScale)
+                let y = (Double(city.y) * yScale)
+                let cityPoint =  NSBezierPath(rect: CGRect(x: x , y: y , width: 12, height: 12))
+                cityPoint.lineWidth = lineWidth
+                color.set()
+                cityPoint.stroke()
+                
+            }
+        }
         
-        antPath.lineWidth = lineWidth
-        color.set()
-        antPath.stroke()
-
+        if let currentTour = bestTour{
+            for (_,edge) in currentTour.edgesInTour {
+                let edgeToDraw  = NSBezierPath()
+                edgeToDraw.moveToPoint(NSPoint(x: edge.cityALocation.x * xScale, y: (edge.cityALocation.y  * yScale)))
+                edgeToDraw.lineToPoint(NSPoint(x: edge.cityBLocation.x * xScale, y: (edge.cityBLocation.y * yScale)))
+                edgeToDraw.lineWidth = lineWidth
+                NSColor.redColor().set()
+                edgeToDraw.stroke()
+            }
+        }
+        
     }
     
     
-    
-  
-
 }
 
 protocol AntViewDelegate{

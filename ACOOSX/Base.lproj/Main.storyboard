@@ -652,8 +652,8 @@
                 <windowController id="B8D-0N-5wS" sceneMemberID="viewController">
                     <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
-                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-                        <rect key="contentRect" x="196" y="240" width="480" height="270"/>
+                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" bottomStrut="YES"/>
+                        <rect key="contentRect" x="414" y="98" width="900" height="900"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
                     </window>
                     <connections>
@@ -669,13 +669,17 @@
             <objects>
                 <viewController title="Ant Colony Optimization" id="XfG-lQ-9wD" customClass="AntColonyViewController" customModule="ACOOSX" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="m2S-Jp-Qdl" customClass="AntView" customModule="ACOOSX" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="305"/>
+                        <rect key="frame" x="0.0" y="0.0" width="868" height="740"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </view>
+                    <connections>
+                        <outlet property="theView" destination="m2S-Jp-Qdl" id="L0h-9M-dWY"/>
+                        <outlet property="view" destination="m2S-Jp-Qdl" id="QOd-zl-PeB"/>
+                    </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="672.5"/>
+            <point key="canvasLocation" x="75" y="1218"/>
         </scene>
     </scenes>
 </document>
