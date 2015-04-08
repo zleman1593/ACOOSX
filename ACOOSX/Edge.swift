@@ -14,6 +14,9 @@ class Edge {
     var cityB: Int!
     var cityALocation: Point2D!
     var cityBLocation: Point2D!
+    //Alpha and beta are stored so the lazy property can be run
+    var alpha: Double!
+    var beta: Double!
     lazy var euclideanDistance: Double!  = { [unowned self] in
 
         //calculating distance by euclidean formula
@@ -33,13 +36,36 @@ class Edge {
     }
     
     
-    init(cityA: Int, cityB: Int,cityALocation: Point2D, cityBLocation: Point2D){
+    init(cityA: Int, cityB: Int,cityALocation: Point2D, cityBLocation: Point2D,alpha:Double, beta:Double){
         
         self.cityA = cityA
         self.cityB = cityB
         self.cityALocation = cityALocation
         self.cityBLocation = cityBLocation
+        self.alpha = alpha
+        self.beta = beta
     }
+    
+  
+    func probability(denominator: Double) -> Double  {
+        return self.probNumerator / denominator
+    }
+    
+     var probNumerator: Double {
+            return pow(self.currentPheromoneConcentration,self.alpha)*pow(1/self.euclideanDistance,self.beta)
+    
+        }
+    
+    /*Returns the city that is on the other side of the edge from the city the ant is currently at*/
+    func cityToMoveTo(currentCity:Int) -> Int! {
+        
+        if currentCity != cityB{
+            return cityB
+        } else {
+            return cityA
+        }
+    }
+    
     
     
 
