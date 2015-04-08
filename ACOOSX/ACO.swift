@@ -179,6 +179,7 @@ class ACO  {
         }
         
         lazy var probNumerator: Double! = {
+            [unowned self] in
             if let city  = self.edge {
                 return pow(self.edge.currentPheromoneConcentration,self.alpha)*pow(1/self.edge.euclideanDistance,self.beta)
             }

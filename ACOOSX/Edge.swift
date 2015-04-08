@@ -14,7 +14,8 @@ class Edge {
     var cityB: Int!
     var cityALocation: Point2D!
     var cityBLocation: Point2D!
-    lazy var euclideanDistance: Double!  = {
+    lazy var euclideanDistance: Double!  = { [unowned self] in
+
         //calculating distance by euclidean formula
         let x = self.cityALocation.x - self.cityBLocation.x
         let y = self.cityALocation.y - self.cityBLocation.y
