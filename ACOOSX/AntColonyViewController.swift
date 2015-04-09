@@ -26,7 +26,7 @@ class AntColonyViewController: NSViewController, AntViewDelegate, ACODelegate {
         static let rho = 0.1
         static let alpha = 1.0
         static let beta = 2.0
-        static let fileLocation = "eil76"//"d2103"
+        static let fileLocation = "eil76" //"d2103"
         static let algorithm = "EAS"//"EAS"
         static let epsilon = 0.5
         static let iterations = 200
@@ -34,6 +34,7 @@ class AntColonyViewController: NSViewController, AntViewDelegate, ACODelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.value), 0)) {
             
             self.start()
@@ -67,10 +68,12 @@ class AntColonyViewController: NSViewController, AntViewDelegate, ACODelegate {
     }
     
     func updateScreenState(tour:Tour?) {
-        if let bestTour = tour {
-        theView.bestTour = bestTour
+        dispatch_async(dispatch_get_main_queue()) {
+            if let bestTour = tour {
+                self.theView.bestTour = bestTour
+            }
+            self.theView.display()
         }
-        theView.display()
     }
     
 }

@@ -749,6 +749,7 @@
 				INFOPLIST_FILE = ACOOSX/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Ounchecked";
 			};
 			name = Debug;
 		};
@@ -761,6 +762,7 @@
 				INFOPLIST_FILE = ACOOSX/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Ounchecked";
 			};
 			name = Release;
 		};
@@ -819,6 +821,7 @@
 				A29407B51AD2DF2E00F46237 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A29407B61AD2DF2E00F46237 /* Build configuration list for PBXNativeTarget "ACOOSXTests" */ = {
 			isa = XCConfigurationList;
@@ -827,6 +830,7 @@
 				A29407B81AD2DF2E00F46237 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

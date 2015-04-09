@@ -21,12 +21,17 @@ class ACO  {
     var epsilon:Double!
     var iterations: Int!
     var delegate:ACODelegate!
+    var bestTour: Tour?
+    private var edgeDictForIteration: [String:EdgeWithProbability]!
+    var queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)
+    let group = dispatch_group_create()
     
     init(fileContents:[Point2D], algorithm:String,numberOfAnts:Int){
         self.cities = fileContents
         self.edges =  makeEdges()
         self.algorithm = algorithm
         self.ants = getAnts(numberOfAnts)
+        
     }
     
     func runWithSettings(alpha:Double,beta:Double,rho:Double,elitismFactor:Double,epsilon:Double,iterations:Int){
@@ -48,73 +53,63 @@ class ACO  {
     
     
     private func start(){
-        var bestTour: Tour?
+        
         
         //Main loop
         for index in 0...iterations {
             initIteration()
             //Construct Solution
             //Create a dictionary of EdgeWithProbability objects so that ants can reuse the calculations from previosu ants.  (Dynamic Programming)
-            //var edgeDictForIteration: [String:EdgeWithProbability] = [:]
+            edgeDictForIteration = [:]
             //If this is used it has to be modified so the lazy numerator pro is recalculated for when the edge has been traversed by an ant for ACS
             
-            for ant in ants {
+            /*Multithread the Elitist Ant System but not the Ant Colony System,
+            * since the tour of one ant has to update the edges,
+            * which will affect the  behaviour of the subsequent ants*/
+            if algorithm == "EAS" {
                 
-                while ant.remainingCities.count != 0 {
-                    
-                    //Find all the edges the ant can move along given its initial starting city and possible available cities
-                    var remainingCities = ant.remainingCities.map {[unowned self] (var nextCity: Int) -> EdgeWithProbability in
-                        
-                        
-                        let (cityA,cityB) = self.swapIfNeeded(ant.currentCity,cityB: nextCity)
-                        
-//                        if let edgeAlreadyUsed = edgeDictForIteration["\(cityA):\(cityB)"]{
-//                            return edgeAlreadyUsed
-//                        } else {
-                            let city =  EdgeWithProbability(edge: self.edges["\(cityA):\(cityB)"]!, alpha:self.alpha,beta:self.beta)
-                            
-                            //Add the edge to the dictionary (Dynamic Programming)
-                            //edgeDictForIteration["\(city.edge.name)"] = city
-                            return city
-//                        }
+                dispatch_group_async(group, queue) { [unowned self] in
+                    // Some asynchronous work
+                    for index in  0..<self.ants.count/4{
+                        self.runAnts(self.ants[index])
                     }
-                    
-                    let (selectedEdge, indexForRemoval) = pickElementWithProbability(remainingCities,denominator: denominator(remainingCities))!
-                    
-                    var cityA = ant.currentCity
-                    var cityB = selectedEdge.cityToMoveTo(cityA)
-                    
-                    //Swap city names if needed to get correct dict entry where name follows format of "less cty value: greater city value"
-                    if cityA > cityB {
-                        let temp = cityB
-                        cityB = cityA
-                        cityA = temp
+                }
+                dispatch_group_async(group, queue) { [unowned self] in
+                    // Some asynchronous work
+                    for index in  self.ants.count/4..<self.ants.count/2{
+                        self.runAnts(self.ants[index])
                     }
-                    
-                    //Update ANT
-                    ant.currentTour.edgesInTour["\(cityA):\(cityB)"] = selectedEdge.edge
-                    ant.remainingCities.removeAtIndex(indexForRemoval)
-                    ant.currentCity = selectedEdge.cityToMoveTo(ant.currentCity)
-                    
-                    if algorithm == "ACS"{
-                        selectedEdge.edge.currentPheromoneConcentration = ((1 - epsilon) * selectedEdge.edge.currentPheromoneConcentration) + (epsilon * selectedEdge.edge.initialPheromoneConcentration)
+                }
+                dispatch_group_async(group, queue) { [unowned self] in
+                    // Some asynchronous work
+                    for index in  self.ants.count/2..<(self.ants.count * 3) / 4{
+                        self.runAnts(self.ants[index])
                     }
-                    
+                }
+                dispatch_group_async(group, queue) { [unowned self] in
+                    // Some asynchronous work
+                    for index in ((self.ants.count * 3) / 4)..<self.ants.count {
+                        self.runAnts(self.ants[index])
+                    }
                 }
                 
+                // When you cannot make any more forward progress,
+                // wait on the group to block the current thread.
+                dispatch_group_wait(group, DISPATCH_TIME_FOREVER)
                 
-                //Update best Tour
-                if let best = bestTour{
-                    if best.length > ant.currentTour.length {
-                        bestTour =  ant.currentTour
-                    }
-                    
-                } else{
-                    bestTour =  ant.currentTour
-                    
+                // Release the group when it is no longer needed.
+                // dispatch_release(group)
+                
+                
+            } else {
+                for index in 0..<self.ants.count {
+                    self.runAnts(self.ants[index])
                 }
-                
             }
+            
+            
+            
+            
             //update phermones
             for (name, edge) in edges {
                 //For Both
@@ -139,7 +134,7 @@ class ACO  {
                 edge.currentPheromoneConcentration = concentration
             }
             
-           println(bestTour!.description)
+            println(bestTour!.description)
             //Update View
             delegate.updateScreenState(bestTour!)
         }
@@ -347,9 +342,9 @@ class ACO  {
                 selectedEdge = arrayToBeSelectedFrom[i]
                 index = i
             }
-                
+            
         }
- 
+        
         return (selectedEdge,index)
     }
     
@@ -363,6 +358,68 @@ class ACO  {
         }
         return (cityA,cityB)
     }
+    
+    private func runAnts(ant:Ant){
+        
+        
+        while ant.remainingCities.count != 0 {
+            
+            //Find all the edges the ant can move along given its initial starting city and possible available cities
+            var remainingCities = ant.remainingCities.map {[unowned self] (var nextCity: Int) -> EdgeWithProbability in
+                
+                
+                let (cityA,cityB) = self.swapIfNeeded(ant.currentCity,cityB: nextCity)
+                
+                if let edgeAlreadyUsed = self.edgeDictForIteration["\(cityA):\(cityB)"]{
+                    return edgeAlreadyUsed
+                } else {
+                    let city =  EdgeWithProbability(edge: self.edges["\(cityA):\(cityB)"]!, alpha:self.alpha,beta:self.beta)
+                    
+                    //Add the edge to the dictionary  if EAS (Dynamic Programming)
+                    if self.algorithm == "EAS" {
+                    //self.edgeDictForIteration["\(city.edge.name)"] = city
+                    }
+                    return city
+                }
+            }
+            
+            let (selectedEdge, indexForRemoval) = pickElementWithProbability(remainingCities,denominator: denominator(remainingCities))!
+            
+            var cityA = ant.currentCity
+            var cityB = selectedEdge.cityToMoveTo(cityA)
+            
+            //Swap city names if needed to get correct dict entry where name follows format of "less cty value: greater city value"
+            if cityA > cityB {
+                let temp = cityB
+                cityB = cityA
+                cityA = temp
+            }
+            
+            //Update ANT
+            ant.currentTour.edgesInTour["\(cityA):\(cityB)"] = selectedEdge.edge
+            ant.remainingCities.removeAtIndex(indexForRemoval)
+            ant.currentCity = selectedEdge.cityToMoveTo(ant.currentCity)
+            
+            if algorithm == "ACS"{
+                selectedEdge.edge.currentPheromoneConcentration = ((1 - epsilon) * selectedEdge.edge.currentPheromoneConcentration) + (epsilon * selectedEdge.edge.initialPheromoneConcentration)
+            }
+            
+        }
+        
+        
+        //Update best Tour
+        if let best = bestTour{
+            if best.length > ant.currentTour.length {
+                bestTour =  ant.currentTour
+            }
+            
+        } else{
+            bestTour =  ant.currentTour
+            
+        }
+        
+    }
+    
     
 }
 
