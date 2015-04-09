@@ -139,7 +139,7 @@ class ACO  {
     }
     
     /*Sums the nummerators to create the denominator*/
-    private func denominator(edges: [Edge]) -> Double{
+    private func denominator(edges: [EdgeWithProbability]) -> Double{
         var sum = 0.0
         for edge in edges{
             if edge.probNumerator.isInfinite {
@@ -200,7 +200,7 @@ class ACO  {
     }
     
     
-    private func pickElementWithProbability(arrayToBeSelectedFrom:[Edge],denominator: Double)-> (Edge,Int)?{
+    private func pickElementWithProbability(arrayToBeSelectedFrom:[EdgeWithProbability],denominator: Double)-> (EdgeWithProbability,Int)?{
         
         //generate one random number  betwen 0 and 1
         let arc4randoMax:Double = 0x100000000
@@ -250,11 +250,11 @@ class ACO  {
         while greedyAnt.remainingCities.count != 0 {
             
             //Find all the edges the ant can move along given its initial starting city and possible available cities
-            let remainingCities = greedyAnt.remainingCities.map {[unowned self] (var nextCity: Int) -> Edge in
+            let remainingCities = greedyAnt.remainingCities.map {[unowned self] (var nextCity: Int) -> EdgeWithProbability in
                 
                 let (cityA,cityB) = self.swapIfNeeded(greedyAnt.currentCity,cityB: nextCity)
             
-                return  self.edges["\(cityA):\(cityB)"]!
+                return   EdgeWithProbability(edge: self.edges["\(cityA):\(cityB)"]!, alpha:self.alpha,beta:self.beta)
                 
             }
             
@@ -272,7 +272,7 @@ class ACO  {
             
             
             //Update Greedy ANT
-            greedyAnt.currentTour.edgesInTour["\(cityA):\(cityB)"] = selectedEdge
+            greedyAnt.currentTour.edgesInTour["\(cityA):\(cityB)"] = selectedEdge.edge
             greedyAnt.remainingCities.removeAtIndex(indexForRemoval)
             greedyAnt.currentCity = selectedEdge.cityToMoveTo(greedyAnt.currentCity)
         }
@@ -285,16 +285,16 @@ class ACO  {
         }
     }
     
-    private func pickEdgeWithShortestDistance(arrayToBeSelectedFrom:[Edge])->(Edge,Int){
+    private func pickEdgeWithShortestDistance(arrayToBeSelectedFrom:[EdgeWithProbability])->(EdgeWithProbability,Int){
         var currentMin = Double(UInt8.max)
-        var selectedEdge: Edge!
+        var selectedEdge: EdgeWithProbability!
         var index = 0
         
         for i in 0..<arrayToBeSelectedFrom.count {
             
             // If random value is within the range indicated by the two indices then return
-            if arrayToBeSelectedFrom[i].euclideanDistance < currentMin {
-                currentMin = arrayToBeSelectedFrom[i].euclideanDistance
+            if arrayToBeSelectedFrom[i].edge.euclideanDistance < currentMin {
+                currentMin = arrayToBeSelectedFrom[i].edge.euclideanDistance
                 selectedEdge = arrayToBeSelectedFrom[i]
                 index = i
             }
@@ -321,12 +321,12 @@ class ACO  {
         while ant.remainingCities.count != 0 {
             
             //Find all the edges the ant can move along given its initial starting city and possible available cities
-            var remainingCities = ant.remainingCities.map {[unowned self] (var nextCity: Int) -> Edge in
+            var remainingCities = ant.remainingCities.map {[unowned self] (var nextCity: Int) -> EdgeWithProbability in
                 
                 
                 let (cityA,cityB) = self.swapIfNeeded(ant.currentCity,cityB: nextCity)
                
-                return self.edges["\(cityA):\(cityB)"]!
+                return EdgeWithProbability(edge: self.edges["\(cityA):\(cityB)"]!, alpha:self.alpha,beta:self.beta)
                     
             }
             
@@ -343,12 +343,12 @@ class ACO  {
             }
             
             //Update ANT
-            ant.currentTour.edgesInTour["\(cityA):\(cityB)"] = selectedEdge
+            ant.currentTour.edgesInTour["\(cityA):\(cityB)"] = selectedEdge.edge
             ant.remainingCities.removeAtIndex(indexForRemoval)
             ant.currentCity = selectedEdge.cityToMoveTo(ant.currentCity)
             
             if algorithm == "ACS"{
-                selectedEdge.currentPheromoneConcentration = ((1 - epsilon) * selectedEdge.currentPheromoneConcentration) + (epsilon * selectedEdge.initialPheromoneConcentration)
+                selectedEdge.edge.currentPheromoneConcentration = ((1 - epsilon) * selectedEdge.edge.currentPheromoneConcentration) + (epsilon * selectedEdge.edge.initialPheromoneConcentration)
             }
             
         }
@@ -366,6 +366,47 @@ class ACO  {
         }
         
     }
+/*This struture is created for use during all ants for a single iteration*/
+    private class EdgeWithProbability {
+        //Alpha and beta are stored so the lazy property can be run
+        var alpha: Double!
+        var beta: Double!
+        
+        //The edge
+        var edge: Edge!
+        
+        init(edge:Edge, alpha: Double,beta:Double){
+            self.edge = edge
+            self.alpha = alpha
+            self.beta = beta
+        }
+        
+        func probability(denominator: Double) -> Double  {
+            return self.probNumerator / denominator
+        }
+        
+        lazy var probNumerator: Double! = {
+            [unowned self] in
+            if let city  = self.edge {
+                return pow(self.edge.currentPheromoneConcentration,self.alpha)*pow(1/self.edge.euclideanDistance,self.beta)
+            }
+            return nil
+            }()
+        
+        /*Returns the city that is on the other side of the edge from the city the ant is currently at*/
+        func cityToMoveTo(currentCity:Int) -> Int! {
+            
+            if currentCity != edge.cityB{
+                return edge.cityB
+            } else {
+                return edge.cityA
+            }
+        }
+        
+        
+        
+    }
+
     
     
 }
