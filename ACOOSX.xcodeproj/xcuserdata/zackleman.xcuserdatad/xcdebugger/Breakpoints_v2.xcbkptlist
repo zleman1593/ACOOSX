@@ -10,27 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ACOOSX/ACO.swift"
-            timestampString = "450279400.059611"
+            timestampString = "450280954.483985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "167"
-            endingLineNumber = "167"
-            landmarkName = "init(edge:alpha:beta:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ACOOSX/ACO.swift"
-            timestampString = "450224099.340614"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "60"
-            endingLineNumber = "60"
+            startingLineNumber = "61"
+            endingLineNumber = "61"
             landmarkName = "start()"
             landmarkType = "5">
             <Locations>
@@ -86,11 +70,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ACOOSX/ACO.swift"
-            timestampString = "450224099.340614"
+            timestampString = "450280954.483985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "64"
-            endingLineNumber = "64"
+            startingLineNumber = "63"
+            endingLineNumber = "63"
             landmarkName = "start()"
             landmarkType = "5">
          </BreakpointContent>
@@ -102,11 +86,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ACOOSX/ACO.swift"
-            timestampString = "450279400.059611"
+            timestampString = "450280954.483985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "151"
-            endingLineNumber = "151"
+            startingLineNumber = "150"
+            endingLineNumber = "150"
             landmarkName = "denominator(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -118,11 +102,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ACOOSX/ACO.swift"
-            timestampString = "450279400.059611"
+            timestampString = "450280954.483985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "150"
-            endingLineNumber = "150"
+            startingLineNumber = "149"
+            endingLineNumber = "149"
             landmarkName = "denominator(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -274,12 +258,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ACOOSX/ACO.swift"
-            timestampString = "450279400.059611"
+            timestampString = "450280954.483985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "210"
-            endingLineNumber = "210"
-            landmarkName = "makeEdges()"
+            startingLineNumber = "209"
+            endingLineNumber = "209"
+            landmarkName = "pickElementWithProbability(_:denominator:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -290,12 +274,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ACOOSX/ACO.swift"
-            timestampString = "450279400.059611"
+            timestampString = "450280954.483985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "196"
-            endingLineNumber = "196"
-            landmarkName = "EdgeWithProbability"
+            startingLineNumber = "195"
+            endingLineNumber = "195"
+            landmarkName = "initArraywithRange(_:max:except:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ACOOSX/ACO.swift"
+            timestampString = "450280954.483985"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "35"
+            endingLineNumber = "35"
+            landmarkName = "ACO"
             landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
@@ -306,11 +306,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ACOOSX/ACO.swift"
-            timestampString = "450224099.340614"
+            timestampString = "450280954.483985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "34"
-            endingLineNumber = "34"
+            startingLineNumber = "31"
+            endingLineNumber = "31"
             landmarkName = "init(fileContents:algorithm:numberOfAnts:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -322,11 +322,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ACOOSX/ACO.swift"
-            timestampString = "450224099.340614"
+            timestampString = "450280954.483985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "30"
-            endingLineNumber = "30"
+            startingLineNumber = "33"
+            endingLineNumber = "33"
             landmarkName = "init(fileContents:algorithm:numberOfAnts:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -338,59 +338,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ACOOSX/ACO.swift"
-            timestampString = "450224099.340614"
+            timestampString = "450280954.483985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "32"
-            endingLineNumber = "32"
-            landmarkName = "init(fileContents:algorithm:numberOfAnts:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ACOOSX/ACO.swift"
-            timestampString = "450279400.059611"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "163"
-            endingLineNumber = "163"
-            landmarkName = "EdgeWithProbability"
-            landmarkType = "3">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ACOOSX/ACO.swift"
-            timestampString = "450279400.059611"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "170"
-            endingLineNumber = "170"
-            landmarkName = "init(edge:alpha:beta:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ACOOSX/ACO.swift"
-            timestampString = "450224099.340614"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "38"
-            endingLineNumber = "38"
+            startingLineNumber = "39"
+            endingLineNumber = "39"
             landmarkName = "runWithSettings(_:beta:rho:elitismFactor:epsilon:iterations:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -402,13 +354,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ACOOSX/ACO.swift"
-            timestampString = "450224099.340614"
+            timestampString = "450280954.483985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "52"
-            endingLineNumber = "52"
-            landmarkName = "runWithSettings(_:beta:rho:elitismFactor:epsilon:iterations:)"
-            landmarkType = "5">
+            startingLineNumber = "53"
+            endingLineNumber = "53"
+            landmarkName = "ACO"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -418,13 +370,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ACOOSX/ACO.swift"
-            timestampString = "450279400.059611"
+            timestampString = "450280954.483985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "142"
-            endingLineNumber = "142"
-            landmarkName = "start()"
-            landmarkType = "5">
+            startingLineNumber = "141"
+            endingLineNumber = "141"
+            landmarkName = "ACO"
+            landmarkType = "3">
             <Locations>
                <Location
                   shouldBeEnabled = "Yes"
@@ -464,11 +416,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ACOOSX/ACO.swift"
-            timestampString = "450224099.340614"
+            timestampString = "450280954.483985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "57"
-            endingLineNumber = "57"
+            startingLineNumber = "58"
+            endingLineNumber = "58"
             landmarkName = "start()"
             landmarkType = "5">
          </BreakpointContent>
@@ -512,71 +464,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ACOOSX/ACO.swift"
-            timestampString = "450279400.059611"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "122"
-            endingLineNumber = "122"
-            landmarkName = "start()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ACOOSX/ACO.swift"
-            timestampString = "450279400.059611"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "129"
-            endingLineNumber = "129"
-            landmarkName = "start()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ACOOSX/ACO.swift"
-            timestampString = "450279400.059611"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "120"
-            endingLineNumber = "120"
-            landmarkName = "start()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ACOOSX/ACO.swift"
-            timestampString = "450279400.059611"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "115"
-            endingLineNumber = "115"
-            landmarkName = "start()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ACOOSX/ACO.swift"
-            timestampString = "450279400.059611"
+            timestampString = "450280954.483985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "121"
@@ -592,11 +480,75 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ACOOSX/ACO.swift"
-            timestampString = "450279400.059611"
+            timestampString = "450280954.483985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "147"
-            endingLineNumber = "147"
+            startingLineNumber = "128"
+            endingLineNumber = "128"
+            landmarkName = "start()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ACOOSX/ACO.swift"
+            timestampString = "450280954.483985"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "119"
+            endingLineNumber = "119"
+            landmarkName = "start()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ACOOSX/ACO.swift"
+            timestampString = "450280954.483985"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "114"
+            endingLineNumber = "114"
+            landmarkName = "start()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ACOOSX/ACO.swift"
+            timestampString = "450280954.483985"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "120"
+            endingLineNumber = "120"
+            landmarkName = "start()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ACOOSX/ACO.swift"
+            timestampString = "450280954.483985"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "146"
+            endingLineNumber = "146"
             landmarkName = "denominator(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -624,12 +576,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ACOOSX/ACO.swift"
-            timestampString = "450279400.059611"
+            timestampString = "450280954.483985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "294"
-            endingLineNumber = "294"
-            landmarkName = "initPheromoneForACS()"
+            startingLineNumber = "293"
+            endingLineNumber = "293"
+            landmarkName = "pickEdgeWithShortestDistance(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -640,12 +592,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ACOOSX/ACO.swift"
-            timestampString = "450279400.059611"
+            timestampString = "450280954.483985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "297"
-            endingLineNumber = "297"
-            landmarkName = "initPheromoneForACS()"
+            startingLineNumber = "296"
+            endingLineNumber = "296"
+            landmarkName = "pickEdgeWithShortestDistance(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -656,12 +608,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ACOOSX/ACO.swift"
-            timestampString = "450279400.059611"
+            timestampString = "450280954.483985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "313"
-            endingLineNumber = "313"
-            landmarkName = "initPheromoneForACS()"
+            startingLineNumber = "312"
+            endingLineNumber = "312"
+            landmarkName = "swapIfNeeded(_:cityB:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -944,11 +896,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ACOOSX/ACO.swift"
-            timestampString = "450279400.059611"
+            timestampString = "450280954.483985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "114"
-            endingLineNumber = "114"
+            startingLineNumber = "113"
+            endingLineNumber = "113"
             landmarkName = "start()"
             landmarkType = "5">
             <Locations>
@@ -990,11 +942,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ACOOSX/ACO.swift"
-            timestampString = "450279400.059611"
+            timestampString = "450280954.483985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "369"
-            endingLineNumber = "369"
+            startingLineNumber = "368"
+            endingLineNumber = "368"
             landmarkName = "runAnts(_:)"
             landmarkType = "5">
             <Locations>
@@ -1050,11 +1002,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ACOOSX/ACO.swift"
-            timestampString = "450279400.059611"
+            timestampString = "450280954.483985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "367"
-            endingLineNumber = "367"
+            startingLineNumber = "366"
+            endingLineNumber = "366"
             landmarkName = "runAnts(_:)"
             landmarkType = "5">
             <Locations>
@@ -1096,13 +1048,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ACOOSX/ACO.swift"
-            timestampString = "450279400.059611"
+            timestampString = "450280954.483985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "370"
-            endingLineNumber = "370"
-            landmarkName = "runAnts(_:)"
-            landmarkType = "5">
+            startingLineNumber = "369"
+            endingLineNumber = "369"
+            landmarkName = "ACO"
+            landmarkType = "3">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -1156,11 +1108,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ACOOSX/ACO.swift"
-            timestampString = "450279400.059611"
+            timestampString = "450280954.483985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "368"
-            endingLineNumber = "368"
+            startingLineNumber = "367"
+            endingLineNumber = "367"
             landmarkName = "runAnts(_:)"
             landmarkType = "5">
             <Locations>
@@ -1216,11 +1168,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ACOOSX/ACO.swift"
-            timestampString = "450279400.059611"
+            timestampString = "450280954.483985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "365"
-            endingLineNumber = "365"
+            startingLineNumber = "364"
+            endingLineNumber = "364"
             landmarkName = "runAnts(_:)"
             landmarkType = "5">
             <Locations>
@@ -1366,11 +1318,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ACOOSX/ACO.swift"
-            timestampString = "450225686.440226"
+            timestampString = "450280954.483985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "59"
-            endingLineNumber = "59"
+            startingLineNumber = "60"
+            endingLineNumber = "60"
             landmarkName = "start()"
             landmarkType = "5">
             <Locations>
@@ -1412,11 +1364,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ACOOSX/ACO.swift"
-            timestampString = "450279400.059611"
+            timestampString = "450280954.483985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "80"
-            endingLineNumber = "80"
+            startingLineNumber = "79"
+            endingLineNumber = "79"
             landmarkName = "start()"
             landmarkType = "5">
          </BreakpointContent>
@@ -1428,27 +1380,27 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ACOOSX/ACO.swift"
-            timestampString = "450279400.059611"
+            timestampString = "450280954.483985"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "84"
+            endingLineNumber = "84"
+            landmarkName = "start()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ACOOSX/ACO.swift"
+            timestampString = "450280954.483985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "85"
             endingLineNumber = "85"
-            landmarkName = "start()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ACOOSX/ACO.swift"
-            timestampString = "450279400.059611"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "86"
-            endingLineNumber = "86"
             landmarkName = "start()"
             landmarkType = "5">
             <Locations>
@@ -1490,11 +1442,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ACOOSX/ACO.swift"
-            timestampString = "450279400.059611"
+            timestampString = "450280954.483985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "92"
-            endingLineNumber = "92"
+            startingLineNumber = "91"
+            endingLineNumber = "91"
             landmarkName = "start()"
             landmarkType = "5">
             <Locations>
@@ -1536,11 +1488,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ACOOSX/ACO.swift"
-            timestampString = "450279400.059611"
+            timestampString = "450280954.483985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "74"
-            endingLineNumber = "74"
+            startingLineNumber = "73"
+            endingLineNumber = "73"
             landmarkName = "start()"
             landmarkType = "5">
             <Locations>
@@ -1582,11 +1534,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ACOOSX/ACO.swift"
-            timestampString = "450279431.042735"
+            timestampString = "450280954.483985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "106"
-            endingLineNumber = "106"
+            startingLineNumber = "105"
+            endingLineNumber = "105"
             landmarkName = "start()"
             landmarkType = "5">
             <Locations>
@@ -1628,11 +1580,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ACOOSX/ACO.swift"
-            timestampString = "450279436.793935"
+            timestampString = "450280954.483985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "79"
-            endingLineNumber = "79"
+            startingLineNumber = "78"
+            endingLineNumber = "78"
             landmarkName = "start()"
             landmarkType = "5">
             <Locations>
@@ -1688,11 +1640,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ACOOSX/ACO.swift"
-            timestampString = "450279477.535478"
+            timestampString = "450280954.483985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "71"
-            endingLineNumber = "71"
+            startingLineNumber = "70"
+            endingLineNumber = "70"
             landmarkName = "start()"
             landmarkType = "5">
             <Locations>
@@ -1748,11 +1700,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ACOOSX/ACO.swift"
-            timestampString = "450279484.852001"
+            timestampString = "450280954.483985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "98"
-            endingLineNumber = "98"
+            startingLineNumber = "97"
+            endingLineNumber = "97"
             landmarkName = "start()"
             landmarkType = "5">
             <Locations>
