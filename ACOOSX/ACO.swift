@@ -18,6 +18,7 @@ class ACO  {
     var beta: Double!
     var rho: Double!
     var elitismFactor: Double!
+    var q_o:Double!
     var epsilon:Double!
     var iterations: Int!
     var delegate:ACODelegate!
@@ -33,13 +34,14 @@ class ACO  {
         
     }
     
-    func runWithSettings(alpha:Double,beta:Double,rho:Double,elitismFactor:Double,epsilon:Double,iterations:Int){
+    func runWithSettings(alpha:Double,beta:Double,rho:Double,elitismFactor:Double,q_o:Double,epsilon:Double,iterations:Int){
         self.alpha = alpha
         self.beta = beta
         self.rho = rho
         self.elitismFactor = elitismFactor
         self.epsilon = epsilon
         self.iterations = iterations
+        self.q_o = q_o
         
         if algorithm == "ACS" {
             initPheromoneForACS()
@@ -151,7 +153,7 @@ class ACO  {
     }
     
     
-       
+    
     
     private func makeEdges() -> [String:Edge]{
         var edgeDict:[String:Edge] = [:]
@@ -203,10 +205,8 @@ class ACO  {
     private func pickElementWithProbability(arrayToBeSelectedFrom:[EdgeWithProbability],denominator: Double)-> (EdgeWithProbability,Int)?{
         
         //generate one random number  betwen 0 and 1
-        let arc4randoMax:Double = 0x100000000
-        let upper = 1.0
-        let lower = 0.0
-        let randomNumber = (Double(arc4random()) / arc4randoMax) * (upper - lower) + lower
+        
+        let randomNumber = generateRandom(0.0,upper:1.0)
         
         // Initialize two range indices that bracket probability ranges
         var cumulativeProbabilityLag = 0.0
@@ -232,6 +232,27 @@ class ACO  {
         return nil
     }
     
+    private func pickElementToMaximize(arrayToBeSelectedFrom:[EdgeWithProbability]) -> (EdgeWithProbability,Int) {
+        var maxValue =  Double(Int.min)
+        var edgeToReturn: EdgeWithProbability!
+        var i = 0
+        for index in 0..<arrayToBeSelectedFrom.count {
+            
+            if maxValue <  arrayToBeSelectedFrom[index].probNumerator {
+                maxValue = arrayToBeSelectedFrom[index].probNumerator
+                edgeToReturn = arrayToBeSelectedFrom[index]
+                i = index
+            }
+        }
+        
+        
+        return (edgeToReturn,i)
+        
+        
+        
+    }
+    
+    
     
     //For ACS this inits the phermone level
     private func initPheromoneForEAS(){
@@ -253,7 +274,7 @@ class ACO  {
             let remainingCities = greedyAnt.remainingCities.map {[unowned self] (var nextCity: Int) -> EdgeWithProbability in
                 
                 let (cityA,cityB) = self.swapIfNeeded(greedyAnt.currentCity,cityB: nextCity)
-            
+                
                 return   EdgeWithProbability(edge: self.edges["\(cityA):\(cityB)"]!, alpha:self.alpha,beta:self.beta)
                 
             }
@@ -323,14 +344,23 @@ class ACO  {
             //Find all the edges the ant can move along given its initial starting city and possible available cities
             var remainingCities = ant.remainingCities.map {[unowned self] (var nextCity: Int) -> EdgeWithProbability in
                 
-                
                 let (cityA,cityB) = self.swapIfNeeded(ant.currentCity,cityB: nextCity)
-               
                 return EdgeWithProbability(edge: self.edges["\(cityA):\(cityB)"]!, alpha:self.alpha,beta:self.beta)
-                    
+                
             }
             
-            let (selectedEdge, indexForRemoval) = pickElementWithProbability(remainingCities,denominator: denominator(remainingCities))!
+            var selectedEdge:EdgeWithProbability!
+            var indexForRemoval: Int!
+
+            if  algorithm == "ACS" && generateRandom(0.0,upper:1.0) < q_o {
+                let   result = pickElementToMaximize(remainingCities)
+                selectedEdge = result.0
+                indexForRemoval = result.1
+            }else {
+                let result = pickElementWithProbability(remainingCities,denominator: denominator(remainingCities))!
+                selectedEdge = result.0
+                indexForRemoval = result.1
+            }
             
             var cityA = ant.currentCity
             var cityB = selectedEdge.cityToMoveTo(cityA)
@@ -366,7 +396,7 @@ class ACO  {
         }
         
     }
-/*This struture is created for use during all ants for a single iteration*/
+    /*This struture is created for use during all ants for a single iteration*/
     private class EdgeWithProbability {
         //Alpha and beta are stored so the lazy property can be run
         var alpha: Double!
@@ -406,7 +436,13 @@ class ACO  {
         
         
     }
-
+    
+    func generateRandom(lower:Double, upper: Double)-> Double{
+        //generate one random number  betwen 0 and 1
+        let arc4randoMax:Double = 0x100000000
+        return (Double(arc4random()) / arc4randoMax) * (upper - lower) + lower
+    }
+    
     
     
 }
@@ -417,5 +453,12 @@ protocol ACODelegate {
     func updateScreenState(tour:Tour?)
 }
 
-
+//extension Double {
+//
+//    func generateRandom(lower:Double, upper: Double)-> Double{
+//    //generate one random number  betwen 0 and 1
+//    let arc4randoMax:Double = 0x100000000
+//    return (Double(arc4random()) / arc4randoMax) * (upper - lower) + lower
+//    }
+//}
 

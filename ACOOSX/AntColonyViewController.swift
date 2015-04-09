@@ -24,10 +24,11 @@ class AntColonyViewController: NSViewController, AntViewDelegate, ACODelegate {
     
     private struct Parameters {
         static let rho = 0.1
+        static let q_o = 0.5
         static let alpha = 1.0
         static let beta = 2.0
         static let fileLocation = "eil76" //"d2103"
-        static let algorithm = "EAS"//"EAS"
+        static let algorithm = "ACS"//"EAS"
         static let epsilon = 0.5
         static let iterations = 200
     }
@@ -56,7 +57,7 @@ class AntColonyViewController: NSViewController, AntViewDelegate, ACODelegate {
         solver.delegate = self
         
         //Run the ACO with the settings
-        solver.runWithSettings(Parameters.alpha, beta: Parameters.beta, rho: Parameters.rho, elitismFactor: Double(fileContents.count),epsilon:Parameters.epsilon, iterations:Parameters.iterations)
+        solver.runWithSettings(Parameters.alpha, beta: Parameters.beta, rho: Parameters.rho, elitismFactor: Double(fileContents.count), q_o:Parameters.q_o,epsilon:Parameters.epsilon, iterations:Parameters.iterations)
         
     }
     
