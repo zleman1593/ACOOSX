@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>B03EE7F9-5E7D-4CB0-BFB6-BB3CAA512132</string>
 	<key>IDESourceControlProjectName</key>
-	<string>project</string>
+	<string>ACOOSX</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>ED49587884D89EA89C2CC52DB1E1F8D782AAD224</key>
 		<string>https://github.com/zleman1593/ACOOSX.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>ACOOSX.xcodeproj/project.xcworkspace</string>
+	<string>ACOOSX.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>ED49587884D89EA89C2CC52DB1E1F8D782AAD224</key>

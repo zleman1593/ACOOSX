@@ -25,46 +25,60 @@ class ACO  {
     var bestTour: Tour?
     var startTime: NSDate!
     var iterationsSoFar = 0
+    var optimalPathLength: Int
+    var updateScreenState: Bool
+    var percentOfOptimalThreshold: Double!
     var queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)
     let group = dispatch_group_create()
     
-    init(fileContents:[Point2D], algorithm:String,numberOfAnts:Int){
+    init(fileContents:[Point2D], algorithm:String,numberOfAnts:Int,optimalPathLength:Int,percentOfOptimalThreshold: Double,updateScreenState:Bool){
         self.cities = fileContents
         self.algorithm = algorithm
+        self.optimalPathLength = optimalPathLength
+        self.percentOfOptimalThreshold = percentOfOptimalThreshold
+        self.updateScreenState = updateScreenState
         self.ants = getAnts(numberOfAnts)
-        
     }
     
-    func runWithSettings(alpha:Double,beta:Double,rho:Double,elitismFactor:Double,q_o:Double,epsilon:Double,iterations:Int){
+    func runWithSettings(alpha:Double,beta:Double,rho:Double,elitismFactor:Double,q_o:Double,epsilon:Double,iterations:Int)-> (time:NSTimeInterval,iterations:Int,percent:Double){
+        //Set up settings
         self.alpha = alpha
         self.beta = beta
-        self.edges =  makeEdges()
         self.rho = rho
         self.elitismFactor = elitismFactor
         self.epsilon = epsilon
         self.iterations = iterations
         self.q_o = q_o
         
+        //generate All Edges
+        self.edges =  makeEdges()
+        
+        //Init ACS pheromones
         if algorithm == "ACS" {
             initPheromoneForACS()
         }
         
         startTime = NSDate() //Start Time
-        
+        //Start Algorithm
         start()
+        let timeSinceStart = NSDate()   //End Time
+        //Return results to be used in averaging across trials
+        return (timeSinceStart.timeIntervalSinceDate(startTime),iterationsSoFar, bestTour!.length / Double(optimalPathLength))
         
-        let end = NSDate()   //End Time
-        let timeInterval = end.timeIntervalSinceDate(startTime)
-        println(timeInterval)
-
     }
     
     
     private func start(){
         
-        
         //Main loop
         for index in 0...iterations {
+            //Check Termination Condition
+            if let best = bestTour{
+                if best.length >= Double(optimalPathLength) * percentOfOptimalThreshold{
+                    break
+                }
+            }
+            
             initIteration()
             //Construct Solution
             
@@ -143,10 +157,10 @@ class ACO  {
             
             println(bestTour!.description)
             //Update View
-            delegate.updateScreenState(bestTour!)
+            if updateScreenState { delegate.updateScreenState(bestTour!)}
             let timeSinceStart = NSDate()   //End Time
             let timeInterval = timeSinceStart.timeIntervalSinceDate(startTime)
-            println("Time: \(timeInterval) Iterations:\(iterationsSoFar)")
+            println("Time: \(timeInterval) Iterations: \(iterationsSoFar)")//  Percent of Optimal: \(bestTour!.length / optimalPathLength)")
         }
         
     }
@@ -264,13 +278,13 @@ class ACO  {
     }
     
     
-//    
-//    //For ACS this inits the phermone level
-//    private func initPheromoneForEAS(){
-//        for (_,edge) in edges {
-//            edge.currentPheromoneConcentration = 1
-//        }
-//    }
+    //
+    //    //For ACS this inits the phermone level
+    //    private func initPheromoneForEAS(){
+    //        for (_,edge) in edges {
+    //            edge.currentPheromoneConcentration = 1
+    //        }
+    //    }
     
     private func initPheromoneForACS(){
         //Init a Greedy Ant
@@ -361,7 +375,7 @@ class ACO  {
             
             var selectedEdge:EdgeWithProbability!
             var indexForRemoval: Int!
-
+            
             if  algorithm == "ACS" && generateRandom(0.0,upper:1.0) < q_o {
                 let   result = pickElementToMaximize(remainingCities)
                 selectedEdge = result.0
