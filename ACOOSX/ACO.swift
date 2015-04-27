@@ -18,7 +18,7 @@ class ACO  {
     var beta: Double!
     var rho: Double!
     var elitismFactor: Double!
-    var q_o:Double!
+    var qo:Double!
     var epsilon:Double!
     var iterations: Int!
     var delegate:ACODelegate!
@@ -40,7 +40,7 @@ class ACO  {
         self.ants = getAnts(numberOfAnts)
     }
     
-    func runWithSettings(alpha:Double,beta:Double,rho:Double,elitismFactor:Double,q_o:Double,epsilon:Double,iterations:Int)-> (time:NSTimeInterval,iterations:Int,percent:Double){
+    func runWithSettings(alpha:Double,beta:Double,rho:Double,elitismFactor:Double,qo:Double,epsilon:Double,iterations:Int)-> (time:NSTimeInterval,iterations:Int,percent:Double){
         //Set up settings
         self.alpha = alpha
         self.beta = beta
@@ -48,7 +48,7 @@ class ACO  {
         self.elitismFactor = elitismFactor
         self.epsilon = epsilon
         self.iterations = iterations
-        self.q_o = q_o
+        self.qo = qo
         
         //generate All Edges
         self.edges =  makeEdges()
@@ -376,7 +376,7 @@ class ACO  {
             var selectedEdge:EdgeWithProbability!
             var indexForRemoval: Int!
             
-            if  algorithm == "ACS" && generateRandom(0.0,upper:1.0) < q_o {
+            if  algorithm == "ACS" && generateRandom(0.0,upper:1.0) < qo {
                 let   result = pickElementToMaximize(remainingCities)
                 selectedEdge = result.0
                 indexForRemoval = result.1
