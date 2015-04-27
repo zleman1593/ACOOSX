@@ -23,6 +23,8 @@ class ACO  {
     var iterations: Int!
     var delegate:ACODelegate!
     var bestTour: Tour?
+    var startTime: NSDate!
+    var iterationsSoFar = 0
     var queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)
     let group = dispatch_group_create()
     
@@ -45,13 +47,16 @@ class ACO  {
         
         if algorithm == "ACS" {
             initPheromoneForACS()
-
-        }else{
-            initPheromoneForEAS()
-
         }
         
+        startTime = NSDate() //Start Time
+        
         start()
+        
+        let end = NSDate()   //End Time
+        let timeInterval = end.timeIntervalSinceDate(startTime)
+        println(timeInterval)
+
     }
     
     
@@ -63,6 +68,7 @@ class ACO  {
             initIteration()
             //Construct Solution
             
+            iterationsSoFar++
             
             /*Multithread the Elitist Ant System but not the Ant Colony System,
             * since the tour of one ant has to update the edges,
@@ -138,6 +144,9 @@ class ACO  {
             println(bestTour!.description)
             //Update View
             delegate.updateScreenState(bestTour!)
+            let timeSinceStart = NSDate()   //End Time
+            let timeInterval = timeSinceStart.timeIntervalSinceDate(startTime)
+            println("Time: \(timeInterval) Iterations:\(iterationsSoFar)")
         }
         
     }
@@ -255,13 +264,13 @@ class ACO  {
     }
     
     
-    
-    //For ACS this inits the phermone level
-    private func initPheromoneForEAS(){
-        for (_,edge) in edges {
-            edge.currentPheromoneConcentration = 1
-        }
-    }
+//    
+//    //For ACS this inits the phermone level
+//    private func initPheromoneForEAS(){
+//        for (_,edge) in edges {
+//            edge.currentPheromoneConcentration = 1
+//        }
+//    }
     
     private func initPheromoneForACS(){
         //Init a Greedy Ant
@@ -309,7 +318,7 @@ class ACO  {
     }
     
     private func pickEdgeWithShortestDistance(arrayToBeSelectedFrom:[EdgeWithProbability])->(EdgeWithProbability,Int){
-        var currentMin = Double(UInt8.max)
+        var currentMin = Double(UINT32_MAX)
         var selectedEdge: EdgeWithProbability!
         var index = 0
         

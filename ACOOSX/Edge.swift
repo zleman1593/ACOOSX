@@ -46,7 +46,7 @@ class Edge {
         self.cityBLocation = cityBLocation
         self.alpha = alpha
         self.beta = beta
-          initialPheromoneConcentration = 1;
+        self.initialPheromoneConcentration = 1;//Init  Pheromone Concentration  to one for EAS
     }
     
     
