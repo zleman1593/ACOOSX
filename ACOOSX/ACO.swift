@@ -28,7 +28,6 @@ class ACO  {
     
     init(fileContents:[Point2D], algorithm:String,numberOfAnts:Int){
         self.cities = fileContents
-        self.edges =  makeEdges()
         self.algorithm = algorithm
         self.ants = getAnts(numberOfAnts)
         
@@ -37,6 +36,7 @@ class ACO  {
     func runWithSettings(alpha:Double,beta:Double,rho:Double,elitismFactor:Double,q_o:Double,epsilon:Double,iterations:Int){
         self.alpha = alpha
         self.beta = beta
+        self.edges =  makeEdges()
         self.rho = rho
         self.elitismFactor = elitismFactor
         self.epsilon = epsilon
@@ -45,8 +45,10 @@ class ACO  {
         
         if algorithm == "ACS" {
             initPheromoneForACS()
+
         }else{
             initPheromoneForEAS()
+
         }
         
         start()
@@ -64,7 +66,7 @@ class ACO  {
             
             /*Multithread the Elitist Ant System but not the Ant Colony System,
             * since the tour of one ant has to update the edges,
-            * which will affect the  behaviour of the subsequent ants*/
+            * which will affect the  behavior of the subsequent ants*/
             if algorithm == "EAS" {
                 
                 dispatch_group_async(group, queue) { [unowned self] in
@@ -313,7 +315,6 @@ class ACO  {
         
         for i in 0..<arrayToBeSelectedFrom.count {
             
-            // If random value is within the range indicated by the two indices then return
             if arrayToBeSelectedFrom[i].edge.euclideanDistance < currentMin {
                 currentMin = arrayToBeSelectedFrom[i].edge.euclideanDistance
                 selectedEdge = arrayToBeSelectedFrom[i]
