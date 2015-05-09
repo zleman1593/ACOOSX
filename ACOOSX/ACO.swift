@@ -40,12 +40,12 @@ class ACO  {
         self.ants = getAnts(numberOfAnts)
     }
     
-    func runWithSettings(alpha:Double,beta:Double,rho:Double,elitismFactor:Double,qo:Double,epsilon:Double,iterations:Int)-> (time:NSTimeInterval,iterations:Int,percent:Double){
+    func runWithSettings(alpha:Double,beta:Double,rho:Double,elitismFactor:Double!,qo:Double!,epsilon:Double!,iterations:Int)-> (time:NSTimeInterval,iterations:Int,percent:Double){
         //Set up settings
         self.alpha = alpha
         self.beta = beta
         self.rho = rho
-        self.elitismFactor = elitismFactor
+        self.elitismFactor = elitismFactor //== 0 ?  : elitismFactor
         self.epsilon = epsilon
         self.iterations = iterations
         self.qo = qo
