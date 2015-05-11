@@ -63,7 +63,7 @@ class ACO  {
         start()
         let timeSinceStart = NSDate()   //End Time
         //Return results to be used in averaging across trials
-        return (timeSinceStart.timeIntervalSinceDate(startTime),iterationsSoFar, bestTour!.length / Double(optimalPathLength))
+        return (timeSinceStart.timeIntervalSinceDate(startTime),iterationsSoFar, bestTour!.length /*/ Double(optimalPathLength)*/)
         
     }
     
@@ -72,6 +72,11 @@ class ACO  {
         
         //Main loop
         for index in 0...iterations {
+            let timeSinceStartA = NSDate()   //End Time
+            let timeIntervalA = timeSinceStartA.timeIntervalSinceDate(startTime)
+            if timeIntervalA >= 600{
+                break;
+            }
             //Check Termination Condition
             if let best = bestTour{
                 if best.length >= Double(optimalPathLength) * percentOfOptimalThreshold{

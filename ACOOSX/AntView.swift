@@ -16,8 +16,8 @@ class AntView: NSView {
     var lineWidth: CGFloat = 3 { didSet {display() } }
     var color: NSColor = NSColor.blueColor() { didSet {display() } }
     var cities:[Point2D]!
-    let yScale = 13.0
-    let xScale = 13.0
+    let yScale = 0.5//13.0
+    let xScale = 0.5//13.0
     var bestTour:Tour? {
         willSet {
             if bestTour?.length != newValue?.length {

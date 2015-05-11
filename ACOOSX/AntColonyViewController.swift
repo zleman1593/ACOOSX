@@ -16,9 +16,13 @@ class AntColonyViewController: NSViewController, AntViewDelegate, ACODelegate {
     private let maxIteration = Int(INT32_MAX)
     
     //Change these two to switch problems
-    private let optimalPathLength = 80450
-    private let problemToTest = "d2103"//"eil76"
+    private var optimalPathLength = 80450
+    private var problemToTest = "d2103"//"eil76"
     
+    
+    //For tests
+    var queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)
+    let group = dispatch_group_create()
     
     @IBOutlet var theView: AntView!{
         didSet {
@@ -63,40 +67,68 @@ class AntColonyViewController: NSViewController, AntViewDelegate, ACODelegate {
         super.viewDidLoad()
         dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.value), 0)) {
             
+            //Load the cities from the file
+            self.fileContents = self.filereader.readFrom(self.problemToTest)
             
             //ACS Will run a test on each core------------------------------------------------------
+            dispatch_group_async(self.group, self.queue) { [unowned self] in
+                // Some asynchronous work
+                
+                
+                //Experiments with Rho------------ 0.01, 0.3, 0.7, 1
+                
+                self.runTest(3,params: ExperimentParameters(rho: 0.7, qo: 0.9, alpha: 1.0, beta: 2.0, fileLocation: self.problemToTest, algorithm: "ACS", epsilon: 0.5, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 10, elitismFactor: nil))
+                self.runTest(3,params: ExperimentParameters(rho: 0.01, qo: 0.9, alpha: 1.0, beta: 2.0, fileLocation: self.problemToTest, algorithm: "ACS", epsilon: 0.5, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 10, elitismFactor: nil))
+                self.runTest(3,params: ExperimentParameters(rho: 0.3, qo: 0.9, alpha: 1.0, beta: 2.0, fileLocation: self.problemToTest, algorithm: "ACS", epsilon: 0.5, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 10, elitismFactor: nil))
+                self.runTest(3,params: ExperimentParameters(rho: 1, qo: 0.9, alpha: 1.0, beta: 2.0, fileLocation: self.problemToTest, algorithm: "ACS", epsilon: 0.5, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 10, elitismFactor: nil))
+                
+            }
+            dispatch_group_async(self.group, self.queue) { [unowned self] in
+                // Some asynchronous work
+                
+                
+                
+                //Experiments with qo------------ 0.1, 0.3, 0.5, 1 -> 0.9 is done
+                self.runTest(3,params: ExperimentParameters(rho: 0.7, qo: 0.1, alpha: 1.0, beta: 2.0, fileLocation: self.problemToTest, algorithm: "ACS", epsilon: 0.5, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 10, elitismFactor: nil))
+                
+                self.runTest(3,params: ExperimentParameters(rho: 0.7, qo: 0.3, alpha: 1.0, beta: 2.0, fileLocation: self.problemToTest, algorithm: "ACS", epsilon: 0.5, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 10, elitismFactor: nil))
+                
+                self.runTest(3,params: ExperimentParameters(rho: 0.7, qo: 0.5, alpha: 1.0, beta: 2.0, fileLocation: self.problemToTest, algorithm: "ACS", epsilon: 0.5, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 10, elitismFactor: nil))
+                
+                self.runTest(3,params: ExperimentParameters(rho: 0.7, qo: 1, alpha: 1.0, beta: 2.0, fileLocation: self.problemToTest, algorithm: "ACS", epsilon: 0.5, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 10, elitismFactor: nil))
+                
+                
+            }
+            dispatch_group_async(self.group, self.queue) { [unowned self] in
+                // Some asynchronous work
+                
+                
+                //Experiments with number of ants------------ 5,10 (already done), 25, 50,100
+                self.runTest(3,params: ExperimentParameters(rho: 0.7, qo: 0.9, alpha: 1.0, beta: 2.0, fileLocation: self.problemToTest, algorithm: "ACS", epsilon: 0.5, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 5, elitismFactor: nil))
+                self.runTest(3,params: ExperimentParameters(rho: 0.7, qo: 0.9, alpha: 1.0, beta: 2.0, fileLocation: self.problemToTest, algorithm: "ACS", epsilon: 0.5, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 25, elitismFactor: nil))
+                self.runTest(3,params: ExperimentParameters(rho: 0.7, qo: 0.9, alpha: 1.0, beta: 2.0, fileLocation: self.problemToTest, algorithm: "ACS", epsilon: 0.5, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 50, elitismFactor: nil))
+                self.runTest(3,params: ExperimentParameters(rho: 0.7, qo: 0.9, alpha: 1.0, beta: 2.0, fileLocation: self.problemToTest, algorithm: "ACS", epsilon: 0.5, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 100, elitismFactor: nil))
+                
+                
+                
+            }
+            dispatch_group_async(self.group, self.queue) { [unowned self] in
+                // Some asynchronous work
+                
+                
+                //Experiments with alpha and beta ratio 2:2, 2:1, 1:4------------ (1:2 is done)
+                
+                self.runTest(3,params: ExperimentParameters(rho: 0.7, qo: 0.9, alpha: 2.0, beta: 2.0, fileLocation: self.problemToTest, algorithm: "ACS", epsilon: 0.5, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 10, elitismFactor: nil))
+                self.runTest(3,params: ExperimentParameters(rho: 0.7, qo: 0.9, alpha: 2.0, beta: 1.0, fileLocation: self.problemToTest, algorithm: "ACS", epsilon: 0.5, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 10, elitismFactor: nil))
+                self.runTest(3,params: ExperimentParameters(rho: 0.7, qo: 0.9, alpha: 1.0, beta: 4.0, fileLocation: self.problemToTest, algorithm: "ACS", epsilon: 0.5, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 10, elitismFactor: nil))
+                
+            }
             
-            //Experiments with Rho------------ 0.01, 0.3, 0.7, 1
-            
-            self.runTest(3,params: ExperimentParameters(rho: 0.7, qo: 0.9, alpha: 1.0, beta: 2.0, fileLocation: self.problemToTest, algorithm: "ACS", epsilon: 0.5, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 10, elitismFactor: nil))
-            self.runTest(3,params: ExperimentParameters(rho: 0.01, qo: 0.9, alpha: 1.0, beta: 2.0, fileLocation: self.problemToTest, algorithm: "ACS", epsilon: 0.5, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 10, elitismFactor: nil))
-            self.runTest(3,params: ExperimentParameters(rho: 0.3, qo: 0.9, alpha: 1.0, beta: 2.0, fileLocation: self.problemToTest, algorithm: "ACS", epsilon: 0.5, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 10, elitismFactor: nil))
-            self.runTest(3,params: ExperimentParameters(rho: 1, qo: 0.9, alpha: 1.0, beta: 2.0, fileLocation: self.problemToTest, algorithm: "ACS", epsilon: 0.5, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 10, elitismFactor: nil))
+            // When you cannot make any more forward progress,
+            // wait on the group to block the current thread.
+            dispatch_group_wait(self.group, DISPATCH_TIME_FOREVER)
             
             
-            //Experiments with Rho------------ 0.1, 0.3, 0.5, 1 -> 0.9 is done
-            self.runTest(3,params: ExperimentParameters(rho: 0.7, qo: 0.1, alpha: 1.0, beta: 2.0, fileLocation: self.problemToTest, algorithm: "ACS", epsilon: 0.5, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 10, elitismFactor: nil))
-
-            self.runTest(3,params: ExperimentParameters(rho: 0.7, qo: 0.3, alpha: 1.0, beta: 2.0, fileLocation: self.problemToTest, algorithm: "ACS", epsilon: 0.5, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 10, elitismFactor: nil))
-
-            self.runTest(3,params: ExperimentParameters(rho: 0.7, qo: 0.5, alpha: 1.0, beta: 2.0, fileLocation: self.problemToTest, algorithm: "ACS", epsilon: 0.5, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 10, elitismFactor: nil))
-
-            self.runTest(3,params: ExperimentParameters(rho: 0.7, qo: 1, alpha: 1.0, beta: 2.0, fileLocation: self.problemToTest, algorithm: "ACS", epsilon: 0.5, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 10, elitismFactor: nil))
-
-            //Experiments with number of ants------------ 5,10 (already done), 25, 50,100
-              self.runTest(3,params: ExperimentParameters(rho: 0.7, qo: 0.9, alpha: 1.0, beta: 2.0, fileLocation: self.problemToTest, algorithm: "ACS", epsilon: 0.5, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 5, elitismFactor: nil))
-              self.runTest(3,params: ExperimentParameters(rho: 0.7, qo: 0.9, alpha: 1.0, beta: 2.0, fileLocation: self.problemToTest, algorithm: "ACS", epsilon: 0.5, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 25, elitismFactor: nil))
-              self.runTest(3,params: ExperimentParameters(rho: 0.7, qo: 0.9, alpha: 1.0, beta: 2.0, fileLocation: self.problemToTest, algorithm: "ACS", epsilon: 0.5, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 50, elitismFactor: nil))
-              self.runTest(3,params: ExperimentParameters(rho: 0.7, qo: 0.9, alpha: 1.0, beta: 2.0, fileLocation: self.problemToTest, algorithm: "ACS", epsilon: 0.5, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 100, elitismFactor: nil))
-            
-            
-            //Experiments with alpha and beta ratio 2:2, 2:1, 1:4------------ (1:2 is done)
-            
-            self.runTest(3,params: ExperimentParameters(rho: 0.7, qo: 0.9, alpha: 2.0, beta: 2.0, fileLocation: self.problemToTest, algorithm: "ACS", epsilon: 0.5, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 10, elitismFactor: nil))
-            self.runTest(3,params: ExperimentParameters(rho: 0.7, qo: 0.9, alpha: 2.0, beta: 1.0, fileLocation: self.problemToTest, algorithm: "ACS", epsilon: 0.5, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 10, elitismFactor: nil))
-            self.runTest(3,params: ExperimentParameters(rho: 0.7, qo: 0.9, alpha: 1.0, beta: 4.0, fileLocation: self.problemToTest, algorithm: "ACS", epsilon: 0.5, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 10, elitismFactor: nil))
-
-
             
             //EAS one test at a time because it is already multithreaded-----------------------------------------------------------
             
@@ -120,11 +152,17 @@ class AntColonyViewController: NSViewController, AntViewDelegate, ACODelegate {
             self.runTest(3,params: ExperimentParameters(rho: 0.7, qo: nil, alpha: 1.0, beta: 2.0, fileLocation: self.problemToTest, algorithm: "EAS", epsilon: nil, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 100, elitismFactor: 10))
             
             //Experiments with alpha and beta ratio 2:2, 2:1, 1:4------------ (1:2 is done)
-             self.runTest(3,params: ExperimentParameters(rho: 0.7, qo: nil, alpha: 2.0, beta: 2.0, fileLocation: self.problemToTest, algorithm: "EAS", epsilon: nil, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 10, elitismFactor: 10))
-             self.runTest(3,params: ExperimentParameters(rho: 0.7, qo: nil, alpha: 2.0, beta: 1.0, fileLocation: self.problemToTest, algorithm: "EAS", epsilon: nil, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 10, elitismFactor: 10))
-             self.runTest(3,params: ExperimentParameters(rho: 0.7, qo: nil, alpha: 1.0, beta: 4.0, fileLocation: self.problemToTest, algorithm: "EAS", epsilon: nil, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 10, elitismFactor: 10))
+            self.runTest(3,params: ExperimentParameters(rho: 0.7, qo: nil, alpha: 2.0, beta: 2.0, fileLocation: self.problemToTest, algorithm: "EAS", epsilon: nil, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 10, elitismFactor: 10))
+            self.runTest(3,params: ExperimentParameters(rho: 0.7, qo: nil, alpha: 2.0, beta: 1.0, fileLocation: self.problemToTest, algorithm: "EAS", epsilon: nil, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 10, elitismFactor: 10))
+            self.runTest(3,params: ExperimentParameters(rho: 0.7, qo: nil, alpha: 1.0, beta: 4.0, fileLocation: self.problemToTest, algorithm: "EAS", epsilon: nil, iterations: self.maxIteration, percentOfOptimalThreshold: 100, updateScreenState: false, numberOfAnts: 10, elitismFactor: 10))
             
-        
+            
+            //////////-----
+            self.problemToTest = "eil76"
+            self.optimalPathLength = 538
+            //Load the cities from the file
+            self.fileContents = self.filereader.readFrom(self.problemToTest)
+            
         }
         
     }
@@ -151,8 +189,7 @@ class AntColonyViewController: NSViewController, AntViewDelegate, ACODelegate {
     
     private func runTest(trials:Int,params:ExperimentParameters){
         var results: [(time:NSTimeInterval,iterations:Int,percent:Double)] = []
-        //Load the cities from the file
-        let fileContents = filereader.readFrom(params.fileLocation)
+        
         //Add Cities to View
         theView.cities = fileContents
         updateScreenState(nil)
@@ -180,13 +217,7 @@ class AntColonyViewController: NSViewController, AntViewDelegate, ACODelegate {
         
     }
     
-    
-    
-    
-    
-    
-    
-    
+ 
     
     
     private func stats(results:[(time:NSTimeInterval,iterations:Int,percent:Double)],params: ExperimentParameters)->[String]{
