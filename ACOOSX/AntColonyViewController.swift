@@ -224,6 +224,7 @@ class AntColonyViewController: NSViewController, AntViewDelegate, ACODelegate {
         
         //let empty = ""
         //var bestIteration:Int
+        // var BestPercent
         //let averageIteration = Double(results.reduce(0.0) {$0 + $1.iterations}) / results.count
         let averagePercent = Double(results.reduce(0.0) {$0 + $1.percent}) / Double(results.count)
         let averageTime = results.reduce(0) {$0 + $1.time} / Double(results.count)

@@ -97,24 +97,48 @@ class ACO  {
                 dispatch_group_async(group, queue) { [unowned self] in
                     // Some asynchronous work
                     for index in  0..<self.ants.count/4{
+                        let timeSinceStartA = NSDate()   //End Time
+                        let timeIntervalA = timeSinceStartA.timeIntervalSinceDate(self.startTime)
+                        if timeIntervalA >= 600{
+                            break;
+                        }
+
                         self.runAnts(self.ants[index])
                     }
                 }
                 dispatch_group_async(group, queue) { [unowned self] in
                     // Some asynchronous work
                     for index in  self.ants.count/4..<self.ants.count/2{
+                        let timeSinceStartA = NSDate()   //End Time
+                        let timeIntervalA = timeSinceStartA.timeIntervalSinceDate(self.startTime)
+                        if timeIntervalA >= 600{
+                            break;
+                        }
+
                         self.runAnts(self.ants[index])
                     }
                 }
                 dispatch_group_async(group, queue) { [unowned self] in
                     // Some asynchronous work
                     for index in  self.ants.count/2..<(self.ants.count * 3) / 4{
+                        let timeSinceStartA = NSDate()   //End Time
+                        let timeIntervalA = timeSinceStartA.timeIntervalSinceDate(self.startTime)
+                        if timeIntervalA >= 600{
+                            break;
+                        }
+
                         self.runAnts(self.ants[index])
                     }
                 }
                 dispatch_group_async(group, queue) { [unowned self] in
                     // Some asynchronous work
                     for index in ((self.ants.count * 3) / 4)..<self.ants.count {
+                        let timeSinceStartA = NSDate()   //End Time
+                        let timeIntervalA = timeSinceStartA.timeIntervalSinceDate(self.startTime)
+                        if timeIntervalA >= 600{
+                            break;
+                        }
+
                         self.runAnts(self.ants[index])
                     }
                 }
@@ -129,6 +153,12 @@ class ACO  {
                 
             } else {
                 for index in 0..<self.ants.count {
+                    let timeSinceStartA = NSDate()   //End Time
+                    let timeIntervalA = timeSinceStartA.timeIntervalSinceDate(startTime)
+                    if timeIntervalA >= 600{
+                        break;
+                    }
+
                     self.runAnts(self.ants[index])
                 }
             }
@@ -138,6 +168,12 @@ class ACO  {
             
             //update phermones
             for (name, edge) in edges {
+                let timeSinceStartA = NSDate()   //End Time
+                let timeIntervalA = timeSinceStartA.timeIntervalSinceDate(startTime)
+                if timeIntervalA >= 600{
+                    break;
+                }
+
                 //For Both
                 var concentration =  edge.currentPheromoneConcentration * (1-rho)
                 //For EAS
@@ -226,6 +262,8 @@ class ACO  {
         for var i = min;  i < max;  i++ {
             if  i != except {
                 array.append(i)
+            } else{
+                println("skipped")
             }
         }
         return array
@@ -369,14 +407,18 @@ class ACO  {
         
         
         while ant.remainingCities.count != 0 {
-            
+            let it = detectGap(ant.remainingCities)
             //Find all the edges the ant can move along given its initial starting city and possible available cities
             var remainingCities = ant.remainingCities.map {[unowned self] (var nextCity: Int) -> EdgeWithProbability in
                 
+                
                 let (cityA,cityB) = self.swapIfNeeded(ant.currentCity,cityB: nextCity)
+                
+                
                 return EdgeWithProbability(edge: self.edges["\(cityA):\(cityB)"]!, alpha:self.alpha,beta:self.beta)
                 
             }
+            
             
             var selectedEdge:EdgeWithProbability!
             var indexForRemoval: Int!
@@ -491,3 +533,16 @@ protocol ACODelegate {
 //    }
 //}
 
+
+func detectGap(array:[Int])-> Int{
+
+     for index in 0..<array.count - 1 {
+
+        if array[index] !=  array[index + 1] + 1 {
+                return index
+        }
+        
+
+    }
+    return 0
+}
